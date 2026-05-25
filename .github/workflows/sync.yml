@@ -1,0 +1,19 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    # 每天凌晨 2:00 (北京时间) 自动执行同步
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync-upstream:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+    steps:
+      - name: Sync with upstream using official GitHub CLI
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh repo sync ${{ github.repository }} --source MHSanaei/3x-ui --branch main
